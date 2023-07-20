@@ -1,0 +1,93 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .container {
+    text-align: center;
+    width: 320px;
+    padding: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    background-color: #ffffff;
+  }
+  
+  h1 {
+    color: #007BFF;
+    font-size: 28px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+  }
+  
+  h1::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 50px;
+    height: 3px;
+    background-color: #007BFF;
+    transform: translateX(-50%);
+  }
+  
+  .job-data {
+    margin-bottom: 20px;
+  }
+  
+  .job-item {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    color: #333333;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .job-item:hover {
+    transform: scale(1.05);
+  }
+  
+  .label {
+    font-weight: bold;
+    color: #555555;
+  }
+  
+  .data {
+    color: #222222;
+  }
+  
+  .download-btn {
+    background-color: #44c767;
+    color: #ffffff;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .download-btn:hover {
+    background-color: #3cb061;
+  }
+  
+  .download-btn:active {
+    position: relative;
+    top: 1px;
+  }
+  
+  .logo {
+    width: 300px;
+    margin-bottom: 20px;
+  }
