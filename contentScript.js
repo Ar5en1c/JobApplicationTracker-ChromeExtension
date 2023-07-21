@@ -1,5 +1,3 @@
-// contentScript.js
-
 // Function to extract job application data and send it to the background script
 function extractJobApplicationData() {
   const headElement = document.querySelector("head");

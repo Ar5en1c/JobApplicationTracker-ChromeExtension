@@ -1,5 +1,3 @@
-// background.js
-
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "storeJobApplicationData") {
     const jobApplicationData = request.jobApplicationData;
@@ -21,10 +19,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         // Add the latest job entry at the beginning of the array
         jobApplications.unshift(jobApplicationData);
 
-        // Limit the stored applications to the last 5 (if you want to keep only the last 5)
-        const lastFiveApplications = jobApplications.slice(0, 5);
-
-        chrome.storage.local.set({ jobApplications: lastFiveApplications }, () => {
+        chrome.storage.local.set({ jobApplications }, () => {
           if (chrome.runtime.lastError) {
             console.error(chrome.runtime.lastError);
           } else {
