@@ -6,52 +6,45 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("downloadButton").addEventListener("click", downloadHistory);
 });
 
+// Function to display job application data in the popup
 function displayJobApplicationData() {
-  // Retrieve the stored job application data from the background script
-  chrome.storage.local.get("jobApplications", (result) => {
+  // Retrieve all the stored job application data from the background script
+  chrome.storage.local.get("jobApplications", ({ jobApplications }) => {
     if (chrome.runtime.lastError) {
       console.error(chrome.runtime.lastError);
-    } else {
-      const jobApplications = result.jobApplications || [];
-      const lastFiveApplications = jobApplications.slice(-5); // Get the last 5 applications if available
+      return;
+    }
 
-      if (lastFiveApplications.length > 0) {
-        // Clear previous data
-        const jobApplicationDataElement = document.getElementById("jobApplicationData");
-        jobApplicationDataElement.innerHTML = "";
+    // Retrieve the last five job applications using the utility function
+    const lastFiveApplications = jobApplications.slice(0, 5);
 
-        // Loop through the last 5 applications and display the data in the popup
-        for (const application of lastFiveApplications) {
-          const positionName = application.positionName;
-          const companyName = application.companyName;
-          const jobApplicationLink = application.jobApplicationLink;
-          const dateOfApplication = application.dateOfApplication;
+    // Get the container element in the popup to display job application data
+    const jobApplicationDataElement = document.getElementById("jobApplicationData");
+    jobApplicationDataElement.innerHTML = "";
 
-          // Create the combined string for position name and company name
-          const positionAndCompany = `${positionName} - ${companyName}`;
+    if (lastFiveApplications.length > 0) {
+      // Loop through the last 5 applications and display the data in the popup
+      for (const application of lastFiveApplications) {
+        const { positionName, companyName, jobApplicationLink, dateOfApplication } = application;
+        const positionAndCompany = `${positionName} - ${companyName}`;
+        const linkElement = document.createElement("a");
+        linkElement.href = jobApplicationLink;
+        linkElement.textContent = positionAndCompany;
+        linkElement.classList.add("link");
 
-          // Create the hyperlink element for the job application link
-          const linkElement = document.createElement("a");
-          linkElement.href = jobApplicationLink;
-          linkElement.textContent = positionAndCompany;
-          linkElement.classList.add("link");
+        const dateElement = document.createElement("div");
+        dateElement.textContent = `Applied On: ${dateOfApplication}`;
 
-          // Create the element to display the date of application
-          const dateElement = document.createElement("div");
-          dateElement.textContent = `Applied On: ${dateOfApplication}`;
+        jobApplicationDataElement.appendChild(linkElement);
+        jobApplicationDataElement.appendChild(dateElement);
 
-          // Append the elements to the container
-          jobApplicationDataElement.appendChild(linkElement);
-          jobApplicationDataElement.appendChild(dateElement);
-
-          // Add a line break after each application data
-          const separatorElement = document.createElement("hr");
-          jobApplicationDataElement.appendChild(separatorElement);
-        }
+        const separatorElement = document.createElement("hr");
+        jobApplicationDataElement.appendChild(separatorElement);
       }
     }
   });
 }
+
 
 function downloadHistory() {
   // Retrieve the stored job application data from the background script
