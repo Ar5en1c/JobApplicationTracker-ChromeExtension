@@ -4,41 +4,41 @@ The Job Application Tracker Chrome Extension allows users to track their job app
 
 **Features**
 
-Track and manage job applications on the jobs.lever.co website.
+• Track and manage job applications submitted on the jobs.lever.co website.
 
-View the last five job applications in the popup interface.
+• View the last five job applications in the popup interface.
 
-Download a CSV file containing the complete job application history.
+• Download a CSV file containing the complete job application history.
 
-Support for multiple websites (more websites will be added in future updates).
+• Support for multiple websites (more websites will be added in future updates).
 
 **Installation**
 
 To install the Job Application Tracker Chrome Extension, follow these steps:
 
-Clone the repository to your local machine:
+1. Clone the repository to your local machine:
 
-git clone https://github.com/your-username/job-application-tracker.git
+2. git clone https://github.com/your-username/job-application-tracker.git
 
-Open Chrome and navigate to chrome://extensions.
+3. Open Chrome and navigate to chrome://extensions.
 
-Turn on Developer mode using the toggle switch at the top right corner of the page.
+4. Turn on Developer mode using the toggle switch at the top right corner of the page.
 
-Click the "Load unpacked" button and select the directory where you cloned the extension repository.
+5. Click the "Load unpacked" button and select the directory where you cloned the extension repository.
 
-The extension will be loaded and ready for use.
+6. The extension will be loaded and ready for use.
 
 **Usage**
 
-Navigate to the jobs.lever.co website.
+• Navigate to any job application on the jobs.lever.co website and as soon you submit the application it will be reflected on the popup.
 
-Click on the Job Application Tracker extension icon in the Chrome toolbar to open the popup interface.
+• Click on the Job Application Tracker extension icon in the Chrome toolbar to open the popup interface.
 
-The popup will display the last five job applications you've saved on the jobs.lever.co website.
+• The popup will display the last five job applications you've saved on the jobs.lever.co website.
 
-To download the complete job application history as a CSV file, click on the "Download History" button.
+• To download the complete job application history as a CSV file, click on the "Download History" button.
 
-As more websites are supported in future updates, the extension will automatically adapt to track job applications on those websites as well.
+• As more websites are supported in future updates, the extension will automatically adapt to track job applications on those websites as well.
 
 **Contributing**
 
