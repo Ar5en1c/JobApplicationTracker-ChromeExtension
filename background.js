@@ -1,6 +1,8 @@
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.action === "storeJobApplicationData") {
-    const jobApplicationData = request.jobApplicationData;
+chrome.runtime.onConnect.addListener((port) => {
+  port.onMessage.addListener((message) => {
+    if (message.action === "storeJobApplicationData") {
+      const jobApplicationData = message.jobApplicationData;
+      // Your existing code here
     chrome.storage.local.get("jobApplications", (result) => {
       if (chrome.runtime.lastError) {
         console.error(chrome.runtime.lastError);
@@ -28,7 +30,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         });
       }
     });
-  }
+  }});
 
   // Return true to indicate the response will be sent asynchronously
   return true;

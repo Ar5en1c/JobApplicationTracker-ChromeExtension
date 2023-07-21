@@ -1,5 +1,5 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Job Application Tracker",
   "version": "1.0",
   "description": "Automatically extract and store job application data.",
@@ -9,20 +9,18 @@
     "128": "/assets/icon128.png",
     "256": "/assets/icon256.png"
   },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["storage", "tabs", "scripting"],
+  "action": {
+    "default_popup": "popup.html"
+  },
   "content_scripts": [
     {
       "matches": ["*://jobs.lever.co/*"],
       "js": ["contentScript.js"],
-      "run_at": "document_end"
+      "run_at": "document_idle"
     }
-  ],
-  "background": {
-    "scripts": ["background.js"],
-    "persistent": false
-  },
-  "permissions": ["storage", "tabs"],
-  "browser_action": {
-    "default_popup": "popup.html"
-  },
-  "web_accessible_resources": ["popup.html"]
+  ]
 }

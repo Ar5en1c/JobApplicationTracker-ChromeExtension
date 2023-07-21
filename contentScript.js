@@ -15,20 +15,11 @@ function extractJobApplicationData() {
     };
 
     // Send the job application data to the background script to be stored
-    chrome.runtime.sendMessage(
-      { action: "storeJobApplicationData", jobApplicationData },
-      (response) => {
-        if (chrome.runtime.lastError) {
-          console.error(chrome.runtime.lastError);
-        } else if (response.error) {
-          console.error(response.error);
-        } else {
-          // Data successfully stored in the background script
-          console.log("Job application data stored successfully");
-        }
-      }
-    );
-  }
+    // Send the job application data to the background script to be stored
+  let port = chrome.runtime.connect();
+  port.postMessage({ action: "storeJobApplicationData", jobApplicationData });
+``}
+
 }
 
 // Function to extract company name and position title from the title
