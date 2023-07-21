@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "Job Application Data Extractor",
+  "name": "Job Application Tracker",
   "version": "1.0",
   "description": "Automatically extract and store job application data.",
   "icons": {
