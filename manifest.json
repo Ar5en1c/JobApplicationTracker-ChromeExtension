@@ -12,7 +12,7 @@
   "background": {
     "service_worker": "background.js"
   },
-  "permissions": ["storage", "tabs", "scripting"],
+  "permissions": ["storage"],
   "action": {
     "default_popup": "popup.html"
   },
