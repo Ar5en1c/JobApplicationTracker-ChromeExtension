@@ -18,7 +18,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://jobs.lever.co/*"],
+      "matches": ["*://jobs.lever.co/*","*://*.greenhouse.io/*"],
       "js": ["contentScript.js"],
       "run_at": "document_idle"
     }

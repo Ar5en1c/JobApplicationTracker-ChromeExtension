@@ -2,8 +2,7 @@ chrome.runtime.onConnect.addListener((port) => {
   port.onMessage.addListener((message) => {
     if (message.action === "storeJobApplicationData") {
       const jobApplicationData = message.jobApplicationData;
-      // Your existing code here
-    chrome.storage.local.get("jobApplications", (result) => {
+      chrome.storage.local.get("jobApplications", (result) => {
       if (chrome.runtime.lastError) {
         console.error(chrome.runtime.lastError);
       } else {
