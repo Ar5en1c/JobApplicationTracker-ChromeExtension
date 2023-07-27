@@ -19,9 +19,11 @@ function extractJobApplicationData() {
 
       // Listen for the submit event on the job application form and trigger data extraction and sending
       document.addEventListener("submit", (event) => {
-        // Send the job application data to the background script to be stored
+        // Replace the following line
         let port = chrome.runtime.connect();
-        port.postMessage({ action: "storeJobApplicationData", jobApplicationData });
+
+        // With this line to send the message to the background script
+        chrome.runtime.sendMessage({ action: "storeJobApplicationData", jobApplicationData });
       });
     }
   } else if (currentWebsite.includes("greenhouse.io")) {
@@ -40,10 +42,32 @@ function extractJobApplicationData() {
         jobApplicationLink,
         dateOfApplication,
       };
-        // Send the job application data to the background script to be stored
-        let port = chrome.runtime.connect();
-        port.postMessage({ action: "storeJobApplicationData", jobApplicationData });
+        // Replace the following line
+      let port = chrome.runtime.connect();
+      // With this line to send the message to the background script
+      chrome.runtime.sendMessage({ action: "storeJobApplicationData", jobApplicationData });
       
+    }
+  } else if (currentWebsite.includes("myworkdayjobs.com")) {
+    
+    const headElement = document.querySelector("head");
+    const titleElement = headElement.querySelector("title");
+    const positionTitle = titleElement.textContent.trim().split(" : ")[0];
+    // const positionElement = document.querySelector(".css-1ozbppc h3.css-y2pr05");
+    // Extract the company name from the application link
+    const companyName = extractCompanyNameFromLink(jobApplicationLink);
+
+    if (companyName && positionTitle) {
+      const jobApplicationData = {
+        positionName: positionTitle,
+        companyName,
+        jobApplicationLink,
+        dateOfApplication,
+      };
+
+      let port = chrome.runtime.connect();
+      // With this line to send the message to the background script
+      chrome.runtime.sendMessage({ action: "storeJobApplicationData", jobApplicationData });
     }
   }
 }
@@ -66,13 +90,25 @@ function extractCompanyAndPositionFromTitle(title) {
   return [companyName.trim(), positionTitle.trim()];
 }
 
+function extractCompanyNameFromLink(link) {
+  // Remove the protocol part from the link
+  const linkWithoutProtocol = link.replace(/^https?:\/\//, "");
+
+  // Extract the first part of the company name before any dot
+  const formattedCompanyName = linkWithoutProtocol.split(".")[0];
+
+  console.log("Workday Company Name fetched from the link");
+  return formattedCompanyName;
+}
+
+
 // Listen for the click event on the "btn-submit" button and trigger data extraction and sending
 document.addEventListener("click", (event) => {
   const btnSubmit1 = document.getElementById("btn-submit");
   const btnSubmit2 = document.getElementById("submit_app");
-  
+
   // Check if the clicked element is the "btn-submit" button
-  if (event.target === btnSubmit1 || event.target === btnSubmit2) {
+  if (event.target === btnSubmit1 || event.target === btnSubmit2 ) {
     // Prevent the default form submission behavior
     event.preventDefault();
 
@@ -80,3 +116,26 @@ document.addEventListener("click", (event) => {
     extractJobApplicationData();
   }
 });
+
+// Create a new MutationObserver
+const observer = new MutationObserver((mutationsList, observer) => {
+  // Check each mutation for added nodes
+  for (let mutation of mutationsList) {
+    if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+      // Check if the review job application page element is added
+      const reviewPageElement = document.querySelector('[data-automation-id="reviewJobApplicationPage"]');
+      if (reviewPageElement) {
+        // Call the function to extract and send the job application data
+        console.log("workday review page detected");
+        extractJobApplicationData();
+        
+        // Disconnect the observer since we no longer need it
+        observer.disconnect();
+        break;
+      }
+    }
+  }
+});
+
+// Start observing changes in the document
+observer.observe(document, { childList: true, subtree: true });
