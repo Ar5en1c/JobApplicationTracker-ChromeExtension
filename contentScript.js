@@ -29,9 +29,9 @@ function extractJobApplicationData() {
     const greenhousePosTitle = greenhouseElement.querySelector("#header .app-title");
     const greenhouseCompanyName = greenhouseElement.querySelector("#header .company-name");
 
-    // Extract the text content from the found elements, if they exist
-    const appTitle = greenhousePosTitle.textContent.trim();
-    const company = greenhouseCompanyName.textContent.trim();
+    // Check if the elements were found before extracting text content
+    const appTitle = greenhousePosTitle ? greenhousePosTitle.textContent.trim() : "";
+    const company = greenhouseCompanyName ? greenhouseCompanyName.textContent.trim() : "";
 
     if (appTitle && company) {
       const jobApplicationData = {
@@ -40,16 +40,22 @@ function extractJobApplicationData() {
         jobApplicationLink,
         dateOfApplication,
       };
-
-      // With this line to send the message to the background script
-      chrome.runtime.sendMessage({ action: "storeJobApplicationData", jobApplicationData });
+      
+      const btnSubmit2 = document.getElementById("submit_app");
+      // Listen for the submit event on the job application form and trigger data extraction and sending
+      document.addEventListener("click", (event) => {
+        if (event.target === btnSubmit2) {
+          // With this line to send the message to the background script
+          chrome.runtime.sendMessage({ action: "storeJobApplicationData", jobApplicationData });
+        }
+      });
       
     }
   } else if (currentWebsite.includes("myworkdayjobs.com")) {
     
     const headElement = document.querySelector("head");
     const titleElement = headElement.querySelector("title");
-    const positionTitle = titleElement.textContent.trim().split(" : ")[0];
+    const positionTitle = titleElement ? titleElement.textContent.trim().split(" : ")[0]: "";
     // const positionElement = document.querySelector(".css-1ozbppc h3.css-y2pr05");
     // Extract the company name from the application link
     const companyName = extractCompanyNameFromLink(jobApplicationLink);
@@ -66,9 +72,9 @@ function extractJobApplicationData() {
     }
   } else if (currentWebsite.includes("ultipro.com")) {
     const imgElement = document.querySelector('[data-automation="navbar-small-logo"]');
-    const companyName = imgElement.getAttribute('alt');
+    const companyName = imgElement ? imgElement.getAttribute('alt'): "";
     const positionElement = document.querySelector('[data-automation="opportunity-title"]');
-    const positionTitle = positionElement.textContent.trim();
+    const positionTitle = positionElement ? positionElement.textContent.trim(): "";
   
     if (companyName && positionTitle) {
       const jobApplicationData = {
@@ -79,6 +85,28 @@ function extractJobApplicationData() {
       };
   
       const sbmtBtn = document.querySelector('[data-automation="btn-submit"]');
+      document.addEventListener("click", (event) => {
+        if (event.target == sbmtBtn) {
+          // With this line to send the message to the background script
+          chrome.runtime.sendMessage({ action: "storeJobApplicationData", jobApplicationData });
+        }
+      });
+    }
+  } else if (currentWebsite.includes("jobs.smartrecruiters.com")) {
+    const positionElement = document.querySelector('[data-test="topbar-job-title"]');
+    const companyElement = document.querySelector('[data-test="topbar-logo"]')
+    const companyName = companyElement ? companyElement.getAttribute('alt'): "";
+    const positionTitle =  positionElement ? positionElement.textContent.trim(): "";
+  
+    if (companyName && positionTitle) {
+      const jobApplicationData = {
+        positionName: positionTitle,
+        companyName,
+        jobApplicationLink,
+        dateOfApplication,
+      };
+  
+      const sbmtBtn = document.querySelector('[data-test="footer-submit"]');
       document.addEventListener("click", (event) => {
         if (event.target == sbmtBtn) {
           // With this line to send the message to the background script
@@ -119,22 +147,6 @@ function extractCompanyNameFromLink(link) {
   return formattedCompanyName;
 }
 
-
-// Listen for the click event on the "btn-submit" button and trigger data extraction and sending
-document.addEventListener("click", (event) => {
-  const btnSubmit1 = document.getElementById("btn-submit");
-  const btnSubmit2 = document.getElementById("submit_app");
-
-  // Check if the clicked element is the "btn-submit" button
-  if (event.target === btnSubmit1 || event.target === btnSubmit2 ) {
-    // Prevent the default form submission behavior
-    event.preventDefault();
-
-    // Extract and send the job application data
-    extractJobApplicationData();
-  }
-});
-
 // Create a new MutationObserver
 const observer = new MutationObserver((mutationsList, observer) => {
   // Check each mutation for added nodes
@@ -143,8 +155,11 @@ const observer = new MutationObserver((mutationsList, observer) => {
       // Check if the review job application page element is added
       const reviewPageElement = document.querySelector('[data-automation-id="reviewJobApplicationPage"]');
       const reviewPageElementUltiPro = document.querySelector('[data-automation="navbar-small-logo"]');
+      const btnSubmit1 = document.getElementById("btn-submit");
+      const btnSubmit2 = document.getElementById("submit_app");
+      const btnSubmit3 = document.querySelector('[data-test="footer-submit"]');
       
-      if (reviewPageElement || reviewPageElementUltiPro ) {
+      if (reviewPageElement || reviewPageElementUltiPro || btnSubmit1 || btnSubmit2 || btnSubmit3) {
         // Call the function to extract and send the job application data
         // console.log("workday review page detected");
         extractJobApplicationData();
