@@ -18,7 +18,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://jobs.lever.co/*","*://*.greenhouse.io/*","*://*.myworkdayjobs.com/*","*://*.ultipro.com/*","*://*.smartrecruiters.com/*","*://*.oraclecloud.com/*","*://*.jobvite.com/*","*://*.icims.com/*"],
+      "matches": ["*://jobs.lever.co/*","*://*.greenhouse.io/*","*://*.myworkdayjobs.com/*","*://*.ultipro.com/*","*://*.smartrecruiters.com/*","*://*.oraclecloud.com/*","*://*.jobvite.com/*"],
       "js": ["contentScript.js"],
       "run_at": "document_idle"
     }

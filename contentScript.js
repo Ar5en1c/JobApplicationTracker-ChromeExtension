@@ -172,7 +172,6 @@ function extractJobApplicationData() {
         const btnSubmit4 = document.querySelector(
           'button[type="button"][data-bind*="submit"]'
         );
-        // console.log(jobApplicationData);
 
         document.addEventListener("click", (event) => {
           if (event.target === btnSubmit4) {
