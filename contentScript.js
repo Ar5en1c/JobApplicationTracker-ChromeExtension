@@ -51,7 +51,7 @@ function extractJobApplicationData() {
         dateOfApplication,
       };
 
-      // const btnSubmit2 = document.getElementById("submit_app");
+      const btnSubmit2 = document.getElementById("submit_app");
       // Listen for the submit event on the job application form and trigger data extraction and sending
       document.addEventListener("click", (event) => {
         if (event.target === btnSubmit2) {
