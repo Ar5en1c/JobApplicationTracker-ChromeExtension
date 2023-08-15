@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Job Application Tracker",
-  "version": "2.1",
+  "version": "3.0",
   "description": "Automatically extract and store job application data.",
   "icons": {
     "16": "/assets/icon16.png",
@@ -18,7 +18,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://jobs.lever.co/*","*://*.greenhouse.io/*","*://*.myworkdayjobs.com/*","*://*.ultipro.com/*","*://*.smartrecruiters.com/*"],
+      "matches": ["*://jobs.lever.co/*","*://*.greenhouse.io/*","*://*.myworkdayjobs.com/*","*://*.ultipro.com/*","*://*.smartrecruiters.com/*","*://*.oraclecloud.com/*","*://*.jobvite.com/*","*://*.icims.com/*"],
       "js": ["contentScript.js"],
       "run_at": "document_idle"
     }
