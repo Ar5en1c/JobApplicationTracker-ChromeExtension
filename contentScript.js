@@ -215,7 +215,55 @@ function extractJobApplicationData() {
           }
         });
       }
-    }, 2000);
+    }, 1000);
+  } else if (currentWebsite.includes("ashbyhq.com")) {
+    // Wait for page to load
+    setTimeout(() => {
+      let companyName = "";
+      const companyImageElement = document.querySelector(
+        '[class*="_navLogoWordmarkImage_"]'
+      );
+      const companyTextElement = document.querySelector(
+        '[class*="_navLogoText_"]'
+      );
+
+      if (companyImageElement) {
+        companyName = companyImageElement.getAttribute("alt") || "";
+      } else if (companyTextElement) {
+        companyName = companyTextElement.textContent.trim();
+      }
+      const positionElement = document.querySelector(
+        "h1.ashby-job-posting-heading"
+      );
+      const positionTitle = positionElement
+        ? positionElement.textContent.trim()
+        : "";
+      console.log(companyName);
+      console.log(positionTitle);
+
+      if (companyName && positionTitle) {
+        const jobApplicationData = {
+          positionName: positionTitle,
+          companyName,
+          jobApplicationLink,
+          dateOfApplication,
+        };
+        console.log(jobApplicationData);
+
+        const btnSubmit6 = document.querySelector(
+          "button.ashby-application-form-submit-button"
+        );
+        document.addEventListener("click", (event) => {
+          if (event.target === btnSubmit6) {
+            // With this line to send the message to the background script
+            chrome.runtime.sendMessage({
+              action: "storeJobApplicationData",
+              jobApplicationData,
+            });
+          }
+        });
+      }
+    }, 1000);
   }
 }
 
@@ -269,6 +317,9 @@ const observer = new MutationObserver((mutationsList, observer) => {
       const btnSubmit5 = document.querySelector(
         'button.jv-button-primary[type="submit"]'
       );
+      const btnSubmit6 = document.querySelector(
+        "button.ashby-application-form-submit-button"
+      );
 
       if (
         reviewPageElement ||
@@ -277,8 +328,10 @@ const observer = new MutationObserver((mutationsList, observer) => {
         btnSubmit2 ||
         btnSubmit3 ||
         btnSubmit4 ||
-        btnSubmit5
+        btnSubmit5 ||
+        btnSubmit6
       ) {
+        console.log("ashby page element found");
         // Call the function to extract and send the job application data
         extractJobApplicationData();
 
