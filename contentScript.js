@@ -264,6 +264,81 @@ function extractJobApplicationData() {
         });
       }
     }, 1000);
+  } else if (currentWebsite.includes("taleo.net")) {
+    // Wait for page to load
+    setTimeout(() => {
+      const companyElement = document.querySelector("a.logo.icon-logo-icon");
+      const companyName = companyElement
+        ? companyElement
+            .querySelector("span.visually-hidden")
+            .textContent.trim()
+        : "";
+      const positionElement = document.querySelector(
+        '[title="View this job description"][class="command-link-visited"]'
+      );
+      const positionTitle = positionElement
+        ? positionElement.textContent.trim()
+        : "";
+      console.log(companyName);
+      console.log(positionTitle);
+
+      if (companyName && positionTitle) {
+        const jobApplicationData = {
+          positionName: positionTitle,
+          companyName,
+          jobApplicationLink,
+          dateOfApplication,
+        };
+        console.log(jobApplicationData);
+
+        const btnSubmit7 = document.querySelector(
+          '[id="et-ef-content-ftf-submitCmdBottom"][type="button"]'
+        );
+        document.addEventListener("click", (event) => {
+          if (event.target === btnSubmit7) {
+            // With this line to send the message to the background script
+            chrome.runtime.sendMessage({
+              action: "storeJobApplicationData",
+              jobApplicationData,
+            });
+          }
+        });
+      }
+    }, 1000);
+  } else if (currentWebsite.includes("eightfold.ai")) {
+    // Wait for page to load
+    setTimeout(() => {
+      const companyName = extractCompanyNameFromLink(jobApplicationLink);
+      const positionElement = document.querySelector("p.apply-position-title");
+      const positionTitle = positionElement
+        ? positionElement.textContent.trim()
+        : "";
+      console.log(companyName);
+      console.log(positionTitle);
+
+      if (companyName && positionTitle) {
+        const jobApplicationData = {
+          positionName: positionTitle,
+          companyName,
+          jobApplicationLink,
+          dateOfApplication,
+        };
+        console.log(jobApplicationData);
+
+        const btnSubmit8 = document.querySelector(
+          '[class="btn-sm btn-primary pointer position-apply-button"][data-test-id="position-apply-button"]'
+        );
+        document.addEventListener("click", (event) => {
+          if (event.target === btnSubmit8) {
+            // With this line to send the message to the background script
+            chrome.runtime.sendMessage({
+              action: "storeJobApplicationData",
+              jobApplicationData,
+            });
+          }
+        });
+      }
+    }, 1000);
   }
 }
 
@@ -320,6 +395,12 @@ const observer = new MutationObserver((mutationsList, observer) => {
       const btnSubmit6 = document.querySelector(
         "button.ashby-application-form-submit-button"
       );
+      const btnSubmit7 = document.querySelector(
+        '[id="et-ef-content-ftf-submitCmdBottom"][type="button"]'
+      );
+      const btnSubmit8 = document.querySelector(
+        '[class="btn-sm btn-primary pointer position-apply-button"][data-test-id="position-apply-button"]'
+      );
 
       if (
         reviewPageElement ||
@@ -329,9 +410,11 @@ const observer = new MutationObserver((mutationsList, observer) => {
         btnSubmit3 ||
         btnSubmit4 ||
         btnSubmit5 ||
-        btnSubmit6
+        btnSubmit6 ||
+        btnSubmit7 ||
+        btnSubmit8
       ) {
-        console.log("ashby page element found");
+        console.log("eightfold page element found");
         // Call the function to extract and send the job application data
         extractJobApplicationData();
 
